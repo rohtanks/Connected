@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.connected.mobile">
+	
+	<insert id="li_insert" parameterType="com.connected.mobile.LostItemVO">
+		insert into lostitem
+		(id,get_name,url,title,get_date,take_place,contact,cate,get_position,get_place,get_thing,
+		status,code,image_url)
+		values(#{id},#{get_name},#{url},#{title},#{get_date},#{take_place},#{contact},
+		#{cate},#{get_position},#{get_place},#{get_thing},#{status},#{code},#{image_url})
+	</insert>
+	
+	<delete id="li_delete">
+		delete from lostitem
+	</delete>
+	
+	<select id="search" parameterType="hashmap" resultType="com.connected.mobile.LostItemVO">
+		select * from lostitem
+		<if test="searchkey == 'sGet_name'">
+			where get_name like #{searchbx}
+		</if>
+		<if test="searchkey == 'sTake_place'">
+			where take_place like #{searchbx}
+		</if>
+		<if test="searchkey == 'sGet_position'">
+			where get_position like #{searchbx}
+		</if>
+		<if test="searchkey == 'searchTest'">
+			where get_name like #{searchbx} or take_place like #{searchbx} or get_position like #{searchbx}
+		</if>
+		<if test="searchkey == 'searchTest_1'">
+			where ((get_name like #{searchbx} and get_name like #{searchbx_1}) or 
+			(get_name like #{searchbx} and take_place like #{searchbx_1}) or 
+			(get_name like #{searchbx} and get_position like #{searchbx_1})) or 
+			((take_place like #{searchbx} and take_place like #{searchbx_1}) or 
+			(take_place like #{searchbx} and get_position like #{searchbx_1})) or 
+			((get_position like #{searchbx} and get_position like #{searchbx_1}))
+		</if>
+	</select>
+</mapper>
